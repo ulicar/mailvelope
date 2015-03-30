@@ -45,7 +45,6 @@ var mvelo = mvelo || null;
     $(window).on('unload', onClose);
     $('#closeBtn').click(onClose);
     $('#copyBtn').click(onCopy);
-    $('body').addClass('spinner');
     mvelo.l10n.localizeHTML();
     mvelo.l10n.getMessages([
       'verify_result_success',
@@ -118,8 +117,7 @@ var mvelo = mvelo || null;
   }
 
   function messageListener(msg) {
-    // remove spinner for all events
-    $('body').removeClass('spinner');
+    mvelo.util.hideLoadingAnimation();
     switch (msg.event) {
       case 'verified-message':
         // js execution is prevented by Content Security Policy directive: "script-src 'self' chrome-extension-resource:"
