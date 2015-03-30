@@ -234,11 +234,6 @@ input[readonly] {
     display: inline-block;
   }
 }
-.spinner {
-  background-image: url('../img/loading.gif');
-  background-repeat: no-repeat;
-  background-position: center;
-}
 
 .key-advanced-open::before {
   content: '<< ';
