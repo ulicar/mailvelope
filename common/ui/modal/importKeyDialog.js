@@ -44,7 +44,6 @@ var mvelo = mvelo || null;
   function onOk() {
     $(window).off('unload');
     $('body').addClass('busy'); // https://bugs.webkit.org/show_bug.cgi?id=101857
-    $('#spinner').show();
     $('.modal-body').css('opacity', '0.4');
     port.postMessage({event: 'key-import-dialog-ok', sender: id});
     $('#okBtn').prop('disabled', true);
@@ -67,14 +66,12 @@ var mvelo = mvelo || null;
       case 'import-error':
         $('#okBtn').prop('disabled', false);
         $('body').removeClass('busy');
-        $('#spinner').hide();
         $('.modal-body').css('opacity', '1');
         $('#importAlert').showAlert('Error', msg.message, 'danger');
         $('#okBtn').prop('disabled', true);
         break;
       case 'import-warning':
         $('body').removeClass('busy');
-        $('#spinner').hide();
         $('.modal-body').css('opacity', '1');
         $('#importAlert').showAlert('Warning', msg.message, 'warning');
         break;
