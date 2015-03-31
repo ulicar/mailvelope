@@ -47,6 +47,7 @@ var mvelo = mvelo || null;
       }
     });
     $('#password').focus();
+    addSpinner();
     mvelo.l10n.localizeHTML();
     mvelo.l10n.getMessages([
       'pwd_dialog_pwd_please',
@@ -59,12 +60,18 @@ var mvelo = mvelo || null;
     mvelo.util.showSecurityBackground();
   }
 
+  function addSpinner() {
+    var spinner = $('<div class="m-spinner" style="position: fixed; width: 100%; margin: 30px auto 60px;"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+    $('body').append(spinner);
+    mvelo.util.hideLoadingAnimation();
+  }
+
   function onOk() {
     $(window).off('unload');
     var pwd = $('#password').val();
     var cache = $('#remember').prop('checked');
     $('body').addClass('busy'); // https://bugs.webkit.org/show_bug.cgi?id=101857
-    $('#spinner').show();
+    mvelo.util.showLoadingAnimation();
     $('.modal-body').css('opacity', '0.4');
     port.postMessage({event: 'pwd-dialog-ok', sender: id, password: pwd, cache: cache});
     $('#okBtn').prop('disabled', true);
@@ -97,7 +104,7 @@ var mvelo = mvelo || null;
         $(window).on('unload', onCancel);
         $('#okBtn').prop('disabled', false);
         $('body').removeClass('busy');
-        $('#spinner').hide();
+        mvelo.util.hideLoadingAnimation();
         $('.modal-body').css('opacity', '1');
         $('#password').closest('.control-group').addClass('error')
                       .end().next().removeClass('hide');
