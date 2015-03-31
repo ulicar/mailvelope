@@ -48,6 +48,7 @@ var mvelo = mvelo || null;
     //   $('#watermark').html(mvelo.util.encodeHTML(token.code));
     // });
     $(window).on('resize', resizeFont);
+    addSpinner();
     addErrorView();
     // show spinner
     spinnerTimer = setTimeout(showSpinner, 600);
@@ -64,10 +65,13 @@ var mvelo = mvelo || null;
   }
 
   function showSpinner() {
-    $('body').addClass('spinner');
-    if ($('body').height() + 2 > mvelo.LARGE_FRAME) {
-      $('body').addClass('spinner-large');
-    }
+    mvelo.util.showLoadingAnimation();
+  }
+
+  function addSpinner() {
+    var spinner = $('<div class="m-spinner" style="position: fixed; width: 100%; margin: 15px auto 60px;"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+    $('body').append(spinner);
+    mvelo.util.hideLoadingAnimation();
   }
 
   function addWrapper() {
@@ -91,13 +95,13 @@ var mvelo = mvelo || null;
       rel: 'stylesheet',
       href: commonPath + '/dep/bootstrap/css/bootstrap.css'
     });
-    var style2 = style.clone().attr('href', commonPath + '/dep/wysihtml5/css/wysihtml5.css');
+    //var style2 = style.clone().attr('href', commonPath + '/dep/wysihtml5/css/wysihtml5.css');
     var style3 = style.clone().attr('href', commonPath + '/ui/inline/dialogs/verifyInlineSig.css');
     var meta = $('<meta/>', { charset: 'UTF-8' });
     sandbox.on('load', function() {
       $(this).contents().find('head').append(meta)
                                      .append(style)
-                                     .append(style2)
+      //                               .append(style2)
                                      .append(style3);
       $(this).contents().find('body').css('background-color', 'rgba(0,0,0,0)');
       $(this).contents().find('body').append(content);
@@ -127,7 +131,8 @@ var mvelo = mvelo || null;
   }
 
   function showErrorMsg(msg) {
-    $('body').removeClass('spinner');
+    //$('body').removeClass('spinner');
+    mvelo.util.hideLoadingAnimation();
     clearTimeout(spinnerTimer);
     $('#errorbox').show();
     $('#errorwell').showAlert(l10n.alert_header_error, msg, 'danger')
@@ -182,7 +187,7 @@ var mvelo = mvelo || null;
         console.log('unknown event');
     }
     clearTimeout(spinnerTimer);
-    $('body').removeClass('spinner spinner-large');
+    mvelo.util.hideLoadingAnimation();
   }
 
   $(document).ready(init);
