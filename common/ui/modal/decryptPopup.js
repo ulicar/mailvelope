@@ -44,7 +44,7 @@ var mvelo = mvelo || null;
     $(window).on('unload', onClose);
     $('#closeBtn').click(onClose);
     $('#copyBtn').click(onCopy);
-    $('body').addClass('spinner');
+    addSpinner();
     mvelo.l10n.localizeHTML();
     mvelo.l10n.getMessages([
       'alert_header_error'
@@ -64,6 +64,11 @@ var mvelo = mvelo || null;
   function addSecuritySettingsButton() {
     var securitySettingsBtn = $('<button id="secureBgndSettingsBtn" class="btn btn-link pull-right"><span class="glyphicon lockBtnIcon"></span></button>');
     $('.modal-body .footer').append(securitySettingsBtn);
+  }
+
+  function addSpinner() {
+    var spinner = $('<div class="m-spinner" style="position: fixed; width: 100%; margin: 30px auto 60px;"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+    $('body').append(spinner);
   }
 
   function onCopy() {
@@ -184,10 +189,9 @@ var mvelo = mvelo || null;
   }
 
   function messageListener(msg) {
-    // remove spinner for all events
-    $('body').removeClass('spinner');
     switch (msg.event) {
       case 'decrypted-message':
+        mvelo.util.hideLoadingAnimation();
         //console.log('popup decrypted message: ', msg.message);
         showMessageArea();
         // js execution is prevented by Content Security Policy directive: "script-src 'self' chrome-extension-resource:"
@@ -195,6 +199,7 @@ var mvelo = mvelo || null;
         sandbox.contents().find('#content').append(msg.message);
         break;
       case 'add-decrypted-attachment':
+        mvelo.util.hideLoadingAnimation();
         //console.log('popup adding decrypted attachment: ', JSON.stringify(msg.message));
         showMessageArea();
         addAttachment(msg.message.filename, msg.message.content, msg.message.mimeType);
@@ -203,6 +208,7 @@ var mvelo = mvelo || null;
         addPwdDialog(msg.id);
         break;
       case 'error-message':
+        mvelo.util.hideLoadingAnimation();
         showError(msg.error);
         break;
       default:
