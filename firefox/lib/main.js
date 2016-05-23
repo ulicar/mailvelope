@@ -373,9 +373,11 @@ function injectEmbeddedOptions() {
     contentScriptFile: [
       data.url('common/dep/jquery.min.js'),
       data.url('common/dep/jquery.ext.js'),
+      data.url('common/dep/angular/angular.min.js'),
       data.url('ui/messageAdapter.js'),
       data.url('common/dep/bootstrap/js/bootstrap.js'),
       data.url('common/dep/bootstrap-sortable/bootstrap-sortable.js'),
+      data.url('common/dep/angular-ui-bootstrap/ui-bootstrap-tpls.js'),
       data.url('common/ui/mvelo.js'),
       data.url('common/ui/options.js'),
       data.url('common/ui/settings/watchList.js'),
@@ -387,8 +389,10 @@ function injectEmbeddedOptions() {
       data.url('common/ui/fileEncrypt/encryptFile.js')
     ],
     contentStyleFile: [
+      data.url("common/dep/angular/angular-csp.css"),
       data.url("common/dep/bootstrap/css/bootstrap.css"),
       data.url("common/dep//bootstrap-sortable/bootstrap-sortable.css"),
+      data.url("common/dep/angular-ui-bootstrap/ui-bootstrap-csp.css"),
       data.url("common/ui/mvelo.css"),
       data.url("common/ui/options.css"),
       data.url("common/ui/fileEncrypt/encrypt.css")

@@ -150,6 +150,12 @@ module.exports = function(grunt) {
             cwd: 'node_modules/ng-tags-input/build/',
             src: ['ng-tags-input.min.js', 'ng-tags-input.min.css', 'ng-tags-input.bootstrap.min.css'],
             dest: 'build/common/dep/ng-tags-input/'
+          },
+          {
+            expand: true,
+            cwd: 'node_modules/angular-ui-bootstrap/dist/',
+            src: ['ui-bootstrap-tpls.js', 'ui-bootstrap-csp.css'],
+            dest: 'build/common/dep/angular-ui-bootstrap/'
           }
         ]
       },

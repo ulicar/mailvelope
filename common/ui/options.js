@@ -38,6 +38,8 @@ var options = {};
     'key_gen_demail'
   ]);
 
+  angular.module('mveloApp', []);
+
   function init() {
     if (document.body.dataset.mvelo) {
       return;
@@ -73,6 +75,9 @@ var options = {};
       exports.l10n = l10n = localStrings;
       // set localized strings
       mvelo.l10n.localizeHTML();
+      // bootstrap angular
+      $('html').attr('ng-csp', '');
+      angular.bootstrap(document, ['mveloApp']);
     })
     .then(initUI)
     .then(function() {
