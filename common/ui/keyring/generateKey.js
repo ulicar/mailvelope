@@ -200,5 +200,19 @@ KeyGenerateCtrl.prototype.onAnother = function() {
 /**
  * Angular controller for the Key Generate Advanced UI.
  */
-function KeyGenAdvCtrl($scope) {
+function KeyGenAdvCtrl() {
+  this.keyExpires = false;
+  this.keyExpirationTime = new Date();
+  this.datePopup = {
+    opened: false
+  };
+  this.datePickerOptions = {
+    closeText: 'Fertig',
+    clearText: 'Löschen',
+    currentText: 'Heute'
+  };
 }
+
+KeyGenAdvCtrl.prototype.openDatePopup = function() {
+  this.datePopup.opened = true;
+};

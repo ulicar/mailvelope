@@ -38,7 +38,7 @@ var options = {};
     'key_gen_demail'
   ]);
 
-  angular.module('mveloApp', []);
+  angular.module('mveloApp', ['ui.bootstrap']);
 
   function init() {
     if (document.body.dataset.mvelo) {

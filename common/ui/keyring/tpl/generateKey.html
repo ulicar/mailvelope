@@ -35,9 +35,30 @@
     <div class="form-group">
       <label class="control-label" data-l10n-id="key_gen_expiration" for="genKeyExpUnit"></label>
       <div class="form-inline">
-        <input type="checkbox" ng-model="keyGenAdv.keyExpires">
-        <span data-l10n-id="key_gen_expires_after"></span>
-
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="keyGenAdv.keyExpires">
+            <span data-l10n-id="key_gen_expires_after"></span>
+          </label>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup
+            ng-model="keyGenAdv.keyExpirationTime"
+            is-open="keyGenAdv.datePopup.opened"
+            ng-disabled="!keyGenAdv.keyExpires"
+            ng-required="keyGenAdv.keyExpires"
+            datepicker-options="keyGenAdv.datePickerOptions"
+            close-text="{{keyGenAdv.datePickerOptions.closeText}}"
+            clear-text="{{keyGenAdv.datePickerOptions.clearText}}"
+            current-text="{{keyGenAdv.datePickerOptions.currentText}}"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default"
+              ng-click="keyGenAdv.openDatePopup()"
+              ng-disabled="!keyGenAdv.keyExpires">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
     <div class="form-group">&nbsp;</div>
