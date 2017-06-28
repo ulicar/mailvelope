@@ -17,12 +17,15 @@
 
 'use strict';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import mvelo from '../../mvelo';
 import * as app from '../app';
 import event from '../util/event';
 import * as l10n from '../../lib/l10n';
 import * as fileLib from '../../lib/file';
+import EncryptFooter from './components/EncryptFooter';
 
 import './encrypt.css';
 
@@ -37,7 +40,6 @@ var $encryptFileUpload;
 var $encryptFileDownload;
 var $encryptToPersonBtn;
 var $encryptAddFileBtn;
-var $encryptToDownloadBtn;
 var $encryptDownloadAllBtn;
 var $encryptFileSelection;
 
@@ -85,6 +87,22 @@ function initRecipientsSelection() {
   });
 }
 
+let encryptFooterProps = {
+  onBack: () => switchPanel($encryptFileUploadPanel, $encryptPanels),
+  onEncrypt: onEncryptFiles,
+  onChangeArmored: newStatus => {
+    isEncryptCached = false;
+    renderEncryptFooter({armored: newStatus})
+  },
+  encryptDisabled: true,
+  armored: false
+};
+
+function renderEncryptFooter(props = {}) {
+  Object.assign(encryptFooterProps, props);
+  ReactDOM.render(React.createElement(EncryptFooter, encryptFooterProps), $('#encryptFooter').get(0));
+}
+
 /**
  *
  */
@@ -109,9 +127,6 @@ function addEncryptInteractivity() {
     .on('click', function() {
       switchPanel($encryptPersonPanel, $encryptPanels);
     });
-  $encryptToDownloadBtn = $('#encrypt_goToDownloadBtn')
-    .prop('disabled', true)
-    .on('click', onEncryptFiles);
   $encryptDownloadAllBtn = $('#encrypt_downloadAllBtn')
     .prop('disabled', true)
     .on('click', function() {
@@ -119,15 +134,13 @@ function addEncryptInteractivity() {
         this.click();
       });
     });
-  $('#encrypt_backToUploadBtn')
-    .on('click', function() {
-      switchPanel($encryptFileUploadPanel, $encryptPanels);
-    });
   $('#encrypt_backToPersonBtn')
     .on('click', function() {
       switchPanel($encryptPersonPanel, $encryptPanels);
     });
   $encryptFileDownload = $('#encrypt_fileDownload');
+
+  renderEncryptFooter();
 
   var MAXFILEUPLOADSIZE = mvelo.crx ? mvelo.MAXFILEUPLOADSIZECHROME : mvelo.MAXFILEUPLOADSIZE;
   MAXFILEUPLOADSIZE = Math.ceil(MAXFILEUPLOADSIZE / 1024 / 1024);
@@ -267,11 +280,11 @@ function onEncryptFiles(e) {
 function encryptFiles(plainFiles, receipients) {
   var encryptProcesses = [];
   plainFiles.forEach(function(plainFile) {
-    encryptProcesses.push(app.pgpModel('encryptFile', [plainFile, receipients])
-      .then(function(armored) {
+    encryptProcesses.push(app.pgpModel('encryptFile', [plainFile, receipients, encryptFooterProps.armored])
+      .then(function(content) {
         addFileToDownload({
-          name: plainFile.name + '.asc',
-          content: armored,
+          name: plainFile.name + encryptFooterProps.armored ? '.asc' : '.gpg',
+          content,
           type: 'application/octet-stream'
         }, $encryptFileDownload, {secureIcon: true});
       })
@@ -304,7 +317,7 @@ function onAddRecipient(e) {
 
   toggleSelectionInKeyList(index, 'ADD');
   if ($encryptKeyList.has('.recipientButton').length) {
-    $encryptToDownloadBtn.prop('disabled', false);
+    renderEncryptFooter({encryptDisabled: false});
   }
   isEncryptCached = false;
 }
@@ -321,7 +334,7 @@ function onRemoveRecipient(e) {
 
   $this.parent().remove();
   if (!$encryptKeyList.has('.recipientButton').length) {
-    $encryptToDownloadBtn.prop('disabled', true);
+    renderEncryptFooter({encryptDisabled: true});
   }
   isEncryptCached = false;
 }

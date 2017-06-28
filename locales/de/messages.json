@@ -195,6 +195,10 @@
     "message": "Mailvelope",
     "description": "Name of the extension."
   },
+  "file_encrypt_armored_output": {
+    "message": "Verschlüsseln in eine Datei im Text Format (ASCII-armored)",
+    "description": ""
+  },
   "file_decrypting": {
     "message": "Entschlüsselung",
     "description": ""

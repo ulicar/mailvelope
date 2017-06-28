@@ -76,3 +76,7 @@
 #decrypt_fileDownloadPanel .m-spinner {
   margin: inherit;
 }
+
+.encrypt-footer-expanded {
+  height: 140px;
+}
